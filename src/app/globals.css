@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased font-sans min-h-screen;
+  }
+}
