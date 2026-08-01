@@ -59,7 +59,7 @@ Security is implemented across three complementary layers:
 
 1. **Database Row Level Security (RLS)**: PostgreSQL policies on `profiles`, `documents`, and Storage objects prevent unauthorized data access regardless of client queries. The `is_admin(user_id)` helper function runs under `SECURITY DEFINER` privileges to check admin status without causing recursive RLS lookups.
 2. **Server Actions & Route Handlers**: API endpoints in `/api/documents` and `/api/admin/*` perform server-side session checks, Zod schema validation, and upload plan limit pre-checks before executing database mutations or streaming files to storage.
-3. **Middleware Gatekeeper**: `src/middleware.ts` intercepts unauthenticated requests attempting to reach `/dashboard`, `/documents`, `/profile`, or `/admin/*`, redirecting non-admin users away from administrative routes.
+3. **Middleware / Proxy Gatekeeper**: `src/proxy.ts` (Next.js 15 convention) intercepts unauthenticated requests attempting to reach `/dashboard`, `/documents`, `/profile`, or `/admin/*`, redirecting non-admin users away from administrative routes.
 
 ---
 

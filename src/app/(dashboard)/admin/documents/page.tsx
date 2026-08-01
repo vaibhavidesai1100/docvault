@@ -20,8 +20,10 @@ import {
   RefreshCw,
   Eye,
   ShieldAlert,
+  Pencil,
 } from 'lucide-react';
 import { DocumentViewerModal } from '@/components/shared/DocumentViewerModal';
+import { EditDocumentModal } from '@/components/shared/EditDocumentModal';
 import { toast } from 'sonner';
 
 export default function AdminDocumentsPage() {
@@ -35,8 +37,9 @@ export default function AdminDocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Preview & Delete State
+  // Preview, Edit & Delete State
   const [viewingDoc, setViewingDoc] = useState<DocumentItem | null>(null);
+  const [editingDoc, setEditingDoc] = useState<DocumentItem | null>(null);
   const [deletingDocId, setDeletingDocId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -244,6 +247,14 @@ export default function AdminDocumentsPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          title="Edit Details"
+                          onClick={() => setEditingDoc(doc)}
+                        >
+                          <Pencil className="h-4 w-4 text-slate-600 hover:text-slate-900" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           title="Download"
                           onClick={() => handleDownload(doc.id, doc.title)}
                         >
@@ -290,6 +301,17 @@ export default function AdminDocumentsPage() {
         isOpen={!!viewingDoc}
         document={viewingDoc}
         onClose={() => setViewingDoc(null)}
+      />
+
+      {/* Document Details Edit Modal */}
+      <EditDocumentModal
+        isOpen={!!editingDoc}
+        document={editingDoc}
+        onClose={() => setEditingDoc(null)}
+        onSuccess={() => {
+          setEditingDoc(null);
+          fetchGlobalDocuments();
+        }}
       />
     </div>
   );

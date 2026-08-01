@@ -28,9 +28,11 @@ import {
   Plus,
   AlertTriangle,
   Sparkles,
+  Pencil,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { DocumentViewerModal } from '@/components/shared/DocumentViewerModal';
+import { EditDocumentModal } from '@/components/shared/EditDocumentModal';
 import { toast } from 'sonner';
 
 export default function DocumentsPage() {
@@ -46,8 +48,9 @@ export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // Preview & Upload Modal State
+  // Preview, Edit & Upload Modal State
   const [viewingDoc, setViewingDoc] = useState<DocumentItem | null>(null);
+  const [editingDoc, setEditingDoc] = useState<DocumentItem | null>(null);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadTitle, setUploadTitle] = useState('');
@@ -344,6 +347,14 @@ export default function DocumentsPage() {
                         <Button
                           variant="ghost"
                           size="icon"
+                          title="Edit Document Details"
+                          onClick={() => setEditingDoc(doc)}
+                        >
+                          <Pencil className="h-4 w-4 text-slate-600 hover:text-slate-900" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           title="Signed Download"
                           onClick={() => handleDownload(doc.id, doc.title)}
                         >
@@ -508,6 +519,17 @@ export default function DocumentsPage() {
         isOpen={!!viewingDoc}
         document={viewingDoc}
         onClose={() => setViewingDoc(null)}
+      />
+
+      {/* Document Details Edit Modal */}
+      <EditDocumentModal
+        isOpen={!!editingDoc}
+        document={editingDoc}
+        onClose={() => setEditingDoc(null)}
+        onSuccess={() => {
+          setEditingDoc(null);
+          fetchDocuments();
+        }}
       />
     </div>
   );

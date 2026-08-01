@@ -22,8 +22,10 @@ import {
   Eye,
   FileCode,
   Image as ImageIcon,
+  Pencil,
 } from 'lucide-react';
 import { DocumentViewerModal } from '@/components/shared/DocumentViewerModal';
+import { EditDocumentModal } from '@/components/shared/EditDocumentModal';
 import { toast } from 'sonner';
 
 export default function SingleDocumentPage() {
@@ -38,6 +40,7 @@ export default function SingleDocumentPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
     async function loadDoc() {
@@ -136,6 +139,10 @@ export default function SingleDocumentPage() {
         </Link>
 
         <div className="flex items-center space-x-3">
+          <Button variant="outline" onClick={() => setIsEditOpen(true)} className="space-x-2">
+            <Pencil className="h-4 w-4 text-slate-600" />
+            <span>Edit Details</span>
+          </Button>
           <Button variant="outline" onClick={() => setIsPreviewModalOpen(true)} className="space-x-2">
             <Eye className="h-4 w-4 text-brand-600" />
             <span>Open Interactive Preview</span>
@@ -288,6 +295,16 @@ export default function SingleDocumentPage() {
         isOpen={isPreviewModalOpen}
         document={document}
         onClose={() => setIsPreviewModalOpen(false)}
+      />
+
+      <EditDocumentModal
+        isOpen={isEditOpen}
+        document={document}
+        onClose={() => setIsEditOpen(false)}
+        onSuccess={(updatedDoc) => {
+          setDocument(updatedDoc);
+          setIsEditOpen(false);
+        }}
       />
     </div>
   );

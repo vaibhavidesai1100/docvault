@@ -8,14 +8,14 @@ import { formatBytes, cn } from '@/lib/utils';
 interface FileDropzoneProps {
   onFileSelect: (file: File | null) => void;
   selectedFile: File | null;
-  subscriptionPlan: SubscriptionPlan;
+  subscriptionPlan?: SubscriptionPlan;
   disabled?: boolean;
 }
 
 export function FileDropzone({
   onFileSelect,
   selectedFile,
-  subscriptionPlan,
+  subscriptionPlan = 'free',
   disabled = false,
 }: FileDropzoneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
